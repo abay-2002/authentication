@@ -1,14 +1,36 @@
 import { useEffect } from 'react'
 import { initFlowbite } from 'flowbite'
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
+import Cookies from 'universal-cookie';
+import axios from 'axios';
 
 export default function Navbar() {
+
+    const cookies = new Cookies();
+    const navigate = useNavigate();
 
     useEffect(() => {
         initFlowbite();
     });
+
+    function logoutHandler(e){
+        e.preventDefault();
+
+        axios.post('http://localhost:8000/logout', {
+            user_id: cookies.get('user_id')
+        })
+        .then(res => {
+            console.log(res)
+            cookies.remove('user_id')
+            cookies.remove('session_id')
+            navigate('/login')
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    }
 
     return (
         <header className="antialiased">
@@ -31,12 +53,12 @@ export default function Navbar() {
                             </div>
                             <ul className="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
                                 <li>
-                                    <Link
-                                        to={'/login'} 
+                                    <button
+                                        onClick={(e) => logoutHandler(e)}
                                         className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                     >
                                         Sign out
-                                    </Link>
+                                    </button>
                                 </li>
                             </ul>
                         </div>
