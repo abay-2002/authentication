@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
+
+    const navigate = useNavigate();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -17,10 +19,16 @@ export default function RegisterPage() {
             password: password
         })
         .then(res => {
+            // TODOS:
+            // Show alert
             console.log(res)
         })
         .catch(err => {
             console.error(err)
+            if(err.response.status === 406){
+                // Email already registered
+                navigate('/login')
+            }
         });
     }
 
