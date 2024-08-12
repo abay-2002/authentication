@@ -1,9 +1,12 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 export default function useIsAuthorized(){
+    
+    const [loading, setLoading] = useState(true);
+    
     const cookies = new Cookies();
 
     const navigate = useNavigate();
@@ -20,12 +23,16 @@ export default function useIsAuthorized(){
             if((res.status === 200) && blacklist.includes(currentPath)){
                 navigate('/dashboard')
             }
+            setLoading(false);
         })
         .catch(err => {
             if(!blacklist.includes(currentPath)){
                 navigate('/login')
             }
             console.error(err)
+            setLoading(false);
         });
     }, []);
+
+    return { loading }
 }
