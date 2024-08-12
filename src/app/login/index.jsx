@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 export default function LoginPage() {
 
+    const cookies = new Cookies();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    
     function loginHandler(e){
         e.preventDefault();
 
@@ -15,7 +17,8 @@ export default function LoginPage() {
             password: password
         })
         .then(res => {
-            console.log(res);
+            cookies.set('user_id', res.data.user_id)
+            cookies.set('session_id', res.data.session_id)
         })
         .catch(err => {
             console.error(err);
