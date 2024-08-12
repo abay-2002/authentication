@@ -4,6 +4,8 @@ import RegisterPage from './app/register'
 
 import RootPage from './app/index'
 import Dashboard from './app/dashboard'
+import ForgotPasswordPage from './app/forgot-password'
+import ChangePasswordPage from './app/change-password'
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+            <Route path='/change-password/:otu/:email' element={<ChangePasswordPage />} />
           </Routes>
         </div>
       </Router>
